@@ -52,3 +52,8 @@ While the `Output` of `Codelines` and `Words` works perfectly out, lower values 
 - Provide support to track event-based usage of distractable products, aiming to do so for Office365 on Outlook, Teams for now
 - Auto count `Context Switches`, when the device user has responded to anything on those applications
 
+
+## Requirements
+The tracking app aims to wirj fully locally.
+- [SQL Server Management Studio](https://learn.microsoft.com/en-us/ssms/install/install)
+- [SQL Server 2022 Express](https://www.microsoft.com/de-de/download/details.aspx?id=104781)
