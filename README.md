@@ -9,7 +9,7 @@ mastery of a skill. In short, deep work is like a superpower in our increasingly
 
 This application aims to allow for precise tracking of deep working sessions, as well as evaluating those. Furthermore, It's secondary goal is to minimize the possibility of distraction through shallow work like mail checking, meetings etc. by simply restricting your local access on those resources while the device is enabled for deep work.
 
-## Mathematical Explanation of tracking deep work in my approach
+## Mathematical Explanation of tracking deep work in the approach
 Cal Newport claims that the formula of `High-Quality Work Produced = (Time Spent) * (Intensity of Focus)` is valid for determining how much value the results of a deep work session might return. While I aggree with that formula by now, I was still asking myself how to exactly determine those variables to track my quality.
 Therefore, the following extension of mine exists to define them.
 
