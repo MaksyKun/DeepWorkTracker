@@ -1,0 +1,181 @@
+﻿@page "/"
+
+<PageTitle>Deep Work Tracker</PageTitle>
+
+<table>
+    <thead>
+        <tr style="font-weight: bold">
+            <th style="border-top-left-radius:10px">Date</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Context Switches</th>
+            <th>Tasks</th>
+            <th>Output</th>
+            <th>Focus Score</th>
+            <th style="width:125px">Deep Work Hours</th>
+            <th style="width:125px">Intensity of Focus</th>
+            <th style="width:125px;border-top-right-radius:10px">High-Quality Work Produced</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach(var entry in DataSource)
+        {
+            <tr>
+                <th>@entry.Date.ToString("dd.MM.yyyy")</th>
+                <th>@entry.StartTime</th>
+                <th>@entry.EndTíme</th>
+                <th>@entry.ContextSwitches</th>
+                <th>@entry.FinishedTasks</th>
+                <th>@entry.Output @(GetOutputUnitSymbol(entry))</th>
+                <th>@(entry.FocusScore * 100)%</th>
+                <th style="border: solid 2px black">
+                    <p style="@GetGenericRateColor(entry.DeepWorkHours.Value, PreviousEntry != null ? PreviousEntry.DeepWorkHours.Value : -1)">
+                        @(@GetGenericRate(entry.DeepWorkHours.Value, PreviousEntry != null ? PreviousEntry.DeepWorkHours.Value : -1))
+                    </p>
+                </th>
+                <th style="border: solid 2px black">
+                    <p style="@GetGenericRateColor(entry.IntensityOfFocus.Value, PreviousEntry != null ? PreviousEntry.IntensityOfFocus.Value : -1)">
+                        @(@GetGenericRate(entry.IntensityOfFocus.Value, PreviousEntry != null ? PreviousEntry.IntensityOfFocus.Value : -1))
+                    </p>
+                </th>
+                <th style="border: solid 2px black">
+                    <p style="@GetGenericRateColor(entry.HighQualityWorkProduced.Value, PreviousEntry != null ? PreviousEntry.HighQualityWorkProduced.Value : -1)">
+                        @(@GetGenericRate(entry.HighQualityWorkProduced.Value, PreviousEntry != null ? PreviousEntry.HighQualityWorkProduced.Value : -1))
+                    </p>
+                </th>
+            </tr>
+            PreviousEntry = entry;
+        }
+    </tbody>
+</table>
+
+<div style="height:150px"></div>
+
+<button class="focusButton">
+    Focus
+</button>
+
+<div style="height:25px"></div>
+<ul>
+    <li style="padding-bottom: 1px"><strong>Deep Work Hours</strong> = End - Start</li>
+    <li><strong>Output per Hour</strong> = Output / 60</li>
+    <li><strong>Intensity of Work</strong> = (Tasks * Output) / (Context Switches + 1)</li>
+    <li><strong>High-Quality Work Produced</strong> = Deep Work Hours * Intensity of Work</li>
+</ul>
+
+@code {
+    private ICollection<DeepWorkSession> DataSource { get; set; } = [];
+    private DeepWorkSession PreviousEntry{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DataSource.Add(new DeepWorkSession()
+            {
+                Id = Guid.NewGuid(),
+                Date = DateOnly.Parse("19.07.2025"),
+                StartTime = TimeOnly.Parse("08:30:00"),
+                EndTíme = TimeOnly.Parse("09:45:00"),
+                ContextSwitches = 1,
+                FinishedTasks = 1,
+                Output = 950,
+                OutputUnit = DeepWorkSession.OutputType.Codelines,
+                FocusScore = 0.8,
+                DeepWorkHours = 1.25
+            });
+        DataSource.Add(new DeepWorkSession()
+        {
+            Id = Guid.NewGuid(),
+            Date = DateOnly.Parse("19.07.2025"),
+            StartTime = TimeOnly.Parse("13:15:00"),
+            EndTíme = TimeOnly.Parse("14:20:00"),
+            ContextSwitches = 2,
+            FinishedTasks = 1,
+            Output = 1100,
+            OutputUnit = DeepWorkSession.OutputType.Words,
+            FocusScore = 0.75,
+            DeepWorkHours = 1.05
+        });
+        DataSource.Add(new DeepWorkSession()
+        {
+            Id = Guid.NewGuid(),
+            Date = DateOnly.Parse("20.07.2025"),
+            StartTime = TimeOnly.Parse("08:30:00"),
+            EndTíme = TimeOnly.Parse("10:15:00"),
+            ContextSwitches = 1,
+            FinishedTasks = 1,
+            Output = 1300,
+            OutputUnit = DeepWorkSession.OutputType.Codelines,
+            FocusScore = 0.8,
+            DeepWorkHours = 1.75
+        });
+
+        // DataSource = DataSource.OrderByDescending(x => x.Date).ToList();
+        // Manual maths
+
+        foreach (var entry in DataSource)
+        {
+            entry.DeepWorkHours = (entry.EndTíme.ToTimeSpan() - entry.StartTime.ToTimeSpan()).TotalHours;
+            entry.OutputPerHour = entry.Output / 60;
+            entry.IntensityOfFocus = (entry.FinishedTasks * entry.Output) / (entry.ContextSwitches + 1);
+            entry.HighQualityWorkProduced = (entry.DeepWorkHours * entry.IntensityOfFocus) / 10;
+        }
+     }
+
+    public string GetOutputUnitSymbol(DeepWorkSession session)
+    {
+        switch(session.OutputUnit)
+        {
+            case DeepWorkSession.OutputType.Codelines:
+                return "🖥️";
+            case DeepWorkSession.OutputType.Words:
+                return "📑";
+            case DeepWorkSession.OutputType.Executions:
+                return "❗";
+            default:
+                return "";
+        }
+    }
+
+    public string GetGenericRate(double current, double previous)
+    {
+        if (previous == -1 || previous == current) return current.ToString("#.##");
+        return previous > current 
+        ? 
+        $"{current.ToString("#.##")} (-" + ((1 - (current / previous)) * 100).ToString("0.##") + "%)" 
+        : 
+        $"{current.ToString("#.##")} (+" + ((1 - (previous / current)) * 100).ToString("0.##") + "%)";
+    }
+    public string GetGenericRateColor(double current, double previous)
+    {
+        if (previous == -1 || previous == current) return "";
+        return previous > current ? "color: red" : "color: green";
+    }
+}
+<style>
+    thead {
+        background: #7C5582;
+        color: #F1CBF5;
+    }
+
+    tbody {
+        border: solid 1px #D9C8DE;
+    }
+
+    th {
+        width: 75px;
+        font-size: 12px;
+        text-align: center
+    }
+
+    .focusButton {
+        background: #7C5582;
+        border-radius: 4px;
+        color: white;
+        width: 900px;
+    }
+
+    .focusButton:hover {
+        background: red;
+    }
+</style>
