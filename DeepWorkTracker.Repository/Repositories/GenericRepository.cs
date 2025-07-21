@@ -7,18 +7,11 @@ namespace DeepWorkTracker.Repository.Repositories
     {
         private ApplicationDbContext _context = null;
         private DbSet<T> table = null;
-        public GenericRepository()
+        public GenericRepository(ApplicationDbContext context)
         {
-            this._context = new ApplicationDbContext();
+            this._context = context;
             //Whatever class name we specify while creating the instance of GenericRepository
             //That class name will be stored in the table variable
-            table = _context.Set<T>();
-        }
-        //Using the Parameterized Constructor, 
-        //we are initializing the context object and table variable
-        public GenericRepository(ApplicationDbContext _context)
-        {
-            this._context = _context;
             table = _context.Set<T>();
         }
         //This method will return all the Records from the table

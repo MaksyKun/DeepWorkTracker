@@ -5,11 +5,11 @@ namespace DeepWorkTracker.Repository
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext() : base()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
-        public DbSet<DeepWorkSession> DeepWorkSessions { get; set; }
+        public DbSet<DeepWorkSession> DeepWorkSessions => Set<DeepWorkSession>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

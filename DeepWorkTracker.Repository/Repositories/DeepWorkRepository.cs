@@ -10,5 +10,11 @@ namespace DeepWorkTracker.Repository.Repositories
 {
     public class DeepWorkRepository : GenericRepository<DeepWorkSession>, IDeepWorkRepository
     {
+        ApplicationDbContext _context = null!;
+
+        public DeepWorkRepository(ApplicationDbContext context) : base(context)
+        {
+            this._context = context;
+        }
     }
 }
