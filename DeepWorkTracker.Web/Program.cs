@@ -1,4 +1,7 @@
+using DeepWorkTracker.Repository;
+using DeepWorkTracker.Service;
 using DeepWorkTracker.Web.Components;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+RepositoryInitializer.Initialize(builder.Services);
+ServiceInitializer.Initialize(builder.Services);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
 var app = builder.Build();
+
+ApplicationDbContext context;
+using (var scope = app.Services.CreateScope())
+{
+    context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    DBInitializer.Initialize(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

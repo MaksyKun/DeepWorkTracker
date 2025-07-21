@@ -1,0 +1,25 @@
+﻿thead {
+    background: #7C5582;
+    color: #F1CBF5;
+}
+
+tbody {
+    border: solid 1px #D9C8DE;
+}
+
+th {
+    width: 125px;
+    font-size: 12px;
+    text-align: center
+}
+
+.focusButton {
+    background: #7C5582;
+    border-radius: 4px;
+    color: white;
+    width: 900px;
+}
+
+    .focusButton:hover {
+        background: red;
+    }
