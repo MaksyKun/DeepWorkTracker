@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DeepWorkTracker.Core.Models;
 
 namespace DeepWorkTracker.Core
 {
     public class GlobalStates
     {
         public static bool IsFocusModeEnabled { get; set; } = false;
+
+        public static DeepWorkSession? CurrentDeepWorkSession { get; set; } = null;
     }
 }

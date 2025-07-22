@@ -13,7 +13,7 @@ namespace DeepWorkTracker.Core.Models
         public DateOnly Date { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTíme { get; set; }
-        public int ContextSwitches { get; set; } = 0;
+        public int Distractions { get; set; } = 0;
         public int FinishedTasks { get; set; } = 0;
         public int Output { get; set; } = 0;
         public OutputType OutputUnit { get; set; } = OutputType.Unselected;

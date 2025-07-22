@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepWorkTracker.Web", "Deep
 		{69B706AE-3E07-4220-B09F-53E342724520} = {69B706AE-3E07-4220-B09F-53E342724520}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepWorkTracker.Functions", "DeepWorkTracker.Functions\DeepWorkTracker.Functions.csproj", "{F223D6B6-F268-4F84-BF88-30A9861F6677}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{D9B12F0F-9EB3-4473-A2F8-A441C50792F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9B12F0F-9EB3-4473-A2F8-A441C50792F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9B12F0F-9EB3-4473-A2F8-A441C50792F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F223D6B6-F268-4F84-BF88-30A9861F6677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F223D6B6-F268-4F84-BF88-30A9861F6677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F223D6B6-F268-4F84-BF88-30A9861F6677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F223D6B6-F268-4F84-BF88-30A9861F6677}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,25 +1,524 @@
-﻿thead {
-    background: #7C5582;
-    color: #F1CBF5;
+﻿.main-dashboard {
+    margin: 0 auto;
+    max-width: 1600px;
+    padding: 2.6rem 1.1rem 0 1.1rem;
 }
 
-tbody {
-    border: solid 1px #D9C8DE;
+/* Header styles */
+.dashboard-header {
+    margin-bottom: 2.3rem;
+    text-align: left;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.1rem;
 }
 
-th {
-    width: 125px;
-    font-size: 12px;
-    text-align: center
+.header-title-row {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
 }
 
-.focusButton {
-    background: #7C5582;
-    border-radius: 4px;
-    color: white;
-    width: 900px;
+.dashboard-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    width: 44px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 1.1em;
+    box-shadow: 0 2px 10px #5e509b10;
 }
 
-    .focusButton:hover {
-        background: red;
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #ece9f6;
+    text-shadow: 0 1px 12px #3a227458;
+}
+
+.dashboard-date {
+    color: #cec6ef;
+    font-size: 1.03rem;
+    letter-spacing: 0.02em;
+    opacity: 0.78;
+    margin-left: 1.3rem;
+    padding-bottom: 0.18em;
+}
+
+/* Glass card for stats and info */
+.glass-card.stats-card {
+    background: rgba(38, 26, 66, 0.9);
+    border-radius: 1.6rem;
+    box-shadow: 0 6px 40px 0 #5e509b18;
+    padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+    width: 100%;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+/* Table styling */
+.focus-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 1.02rem;
+    color: #f2f0fa;
+    background: transparent;
+    margin: 0;
+}
+
+    .focus-table thead tr {
+        background: rgba(82, 61, 121, 0.96);
+    }
+
+    .focus-table th {
+        padding: 1.2em 0.9em;
+        font-size: 1.07rem;
+        font-weight: 700;
+        background: none;
+        color: #f2ecfd;
+        letter-spacing: 0.04em;
+        text-align: center;
+        border: none;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .focus-table tbody tr {
+        transition: background 0.18s;
+    }
+
+        .focus-table tbody tr:hover {
+            background: rgba(110, 97, 149, 0.19);
+        }
+
+    .focus-table td {
+        padding: 0.89em 0.8em;
+        background: rgba(110, 97, 149, 0.19);
+        font-weight: 400;
+        font-size: 1.01rem;
+        text-align: center;
+        border: none;
+        border-bottom: 1px solid rgba(142, 130, 192, 0.12);
+        color: #e5e2f2;
+        vertical-align: middle;
+    }
+
+        .focus-table td.metric-bg {
+            background: rgba(103, 76, 143, 0.18);
+            font-weight: 600;
+        }
+
+    .focus-table th.rounded-left {
+        border-top-left-radius: 1.1rem;
+    }
+
+    .focus-table th.rounded-right {
+        border-top-right-radius: 1.1rem;
+    }
+
+    .focus-table tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 1.1rem;
+    }
+
+    .focus-table tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 1.1rem;
+    }
+
+/* Metric numbers */
+.metric-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2em;
+}
+
+.metric-number {
+    font-weight: 600;
+    font-size: 1.08rem;
+    color: #e2def8;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.28em;
+}
+
+.metric-percent-inline {
+    font-size: 0.77em;
+    opacity: 0.9;
+    font-weight: 500;
+    margin-left: 0.12em;
+    letter-spacing: 0.01em;
+    vertical-align: baseline;
+}
+
+    .metric-percent-inline.pos {
+        color: #34c759;
+    }
+
+    .metric-percent-inline.neg {
+        color: #fc5956;
+    }
+
+/* Output Icon in Table */
+.output-icon {
+    font-size: 1.12em;
+    margin-left: 0.3em;
+    vertical-align: middle;
+    opacity: 0.85;
+}
+
+/* Start Focus Session button */
+.focus-btn-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.7rem;
+    margin-bottom: 0.2rem;
+}
+
+.focus-start-btn {
+    background: linear-gradient(92deg, #7e6de7 0%, #5a3ba8 100%);
+    color: #fff;
+    border: none;
+    border-radius: 1.2em;
+    font-size: 1.23rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.75em 2.7em;
+    box-shadow: 0 2px 14px 0 #6951a64d;
+    cursor: pointer;
+    transition: background 0.13s, box-shadow 0.19s, transform 0.10s;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+
+    .focus-start-btn:hover {
+        background: linear-gradient(89deg, #b6a3f4 0%, #6a4bcf 100%);
+        transform: scale(1.035);
+        box-shadow: 0 4px 24px 0 #6a4bcf38;
+    }
+
+.focus-btn-icon {
+    font-size: 1.15em;
+    margin-right: 0.4em;
+}
+
+/* Info Card */
+.info-card {
+    background: rgba(255,255,255,0.13);
+    border-radius: 1.2em;
+    box-shadow: 0 2px 14px 0 #6951a630;
+    padding: 1.3rem 1.7rem 1.1rem 1.7rem;
+    margin: 2.4rem auto 0 auto;
+    max-width: 720px;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-title {
+    margin: 0 0 0.6em 0;
+    font-size: 1.15rem;
+    color: #ede8ff;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.38em;
+}
+
+.focus-metrics {
+    margin: 0 0 0 0.2em;
+    padding-left: 1.1em;
+    color: #2d2543;
+    font-size: 0.8rem;
+}
+
+    .focus-metrics li {
+        margin-bottom: 0.34em;
+    }
+
+/* Responsive Design */
+@media (max-width: 1050px) {
+    .main-dashboard {
+        padding: 1.3rem 0.3rem 0 0.3rem;
+    }
+
+    .glass-card.stats-card {
+        padding: 0.5rem 0.15rem 1.2rem 0.15rem;
+        border-radius: 1rem;
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .focus-table th, .focus-table td {
+        font-size: 0.93rem;
+    }
+
+    .info-card {
+        padding: 1.1rem 0.6rem;
+    }
+}
+
+.focus-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    min-width: 370px;
+    max-width: 95vw;
+    padding: 2.6rem 2.8rem 2.3rem 2.8rem;
+    background: rgba(42, 32, 58, 0.38);
+    border-radius: 2.2rem;
+    box-shadow: 0 4px 44px 0 #0003, 0 1.5px 0 0 #a095c910;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(1.7px);
+    transition: box-shadow 0.23s;
+    animation: fadeIn 0.6s cubic-bezier(0.77,0,0.175,1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%,-60%) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%,-52%) scale(1);
+    }
+}
+
+.focus-dialog h2 {
+    font-size: 2.3rem;
+    color: #ece9f6;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.7rem;
+    text-align: center;
+    text-shadow: 0 1px 10px #1c0c3340;
+}
+
+.focus-time {
+    color: #cec6ef;
+    font-size: 1.16rem;
+    margin-bottom: 2.3rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+.focus-btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 3.2rem;
+    width: 100%;
+    margin-bottom: 2.2rem;
+}
+
+.focus-btn-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 170px;
+}
+
+.focus-btn {
+    font-size: 1.06rem;
+    font-weight: 600;
+    color: #ece9f6;
+    background: rgba(36, 23, 58, 0.82);
+    border: none;
+    border-radius: 1.3rem;
+    padding: 0.9em 1.8em;
+    cursor: pointer;
+    box-shadow: 0 2px 14px 0 #0002;
+    margin-bottom: 0.6rem;
+    transition: background 0.18s, transform 0.11s;
+    outline: none;
+}
+
+    .focus-btn:hover,
+    .end-btn:hover {
+        background: rgba(53, 36, 85, 0.98);
+        transform: scale(1.03);
+    }
+
+    .focus-btn:active,
+    .end-btn:active {
+        background: rgba(25, 10, 40, 0.97);
+    }
+
+.focus-counter {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff9;
+    text-align: center;
+    text-shadow: 0 2px 10px #23212b44;
+    margin-top: 0.14em;
+    margin-bottom: 0.2em;
+    min-width: 2.3em;
+    letter-spacing: 0.01em;
+}
+
+.end-btn {
+    margin-top: 0.7rem;
+    width: 82%;
+    background: #6a4bcf;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 14px 0 #4e377080;
+    font-size: 1.12rem;
+    letter-spacing: 0.07em;
+    padding: 1em 0;
+    border-radius: 1.1rem;
+    transition: background 0.17s, box-shadow 0.21s;
+}
+
+    .end-btn:hover {
+        background: #896ff5;
+        box-shadow: 0 2px 18px 0 #6a4bcf80;
+        color: #fff;
+    }
+
+/* Output adjust block */
+.output-adjust-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 230px;
+    margin: 0 1.2rem;
+}
+
+.output-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 0.65rem;
+}
+
+.output-btn {
+    font-size: 1.08rem;
+    color: #ece9f6;
+    background: #24173a;
+    border: none;
+    border-radius: 0.75em;
+    padding: 0.37em 0.7em;
+    cursor: pointer;
+    transition: background 0.13s, transform 0.11s;
+    box-shadow: 0 2px 6px #0001;
+}
+
+    .output-btn:hover {
+        background: #523e6c;
+        transform: translateY(-2px) scale(1.07);
+    }
+
+.output-value-box {
+    display: inline-block;
+    min-width: 3.6em;
+    background: #ece9f6;
+    color: #271b38;
+    font-size: 1.35rem;
+    font-weight: 700;
+    border-radius: 0.62em;
+    padding: 0.2em 0.7em;
+    box-shadow: 0 2px 8px #271b3840;
+    margin: 0 0.1em;
+    text-align: center;
+    border: 1.8px solid #a395cd50;
+}
+
+.output-units-row {
+    margin-top: 0.55rem;
+    display: flex;
+    gap: 1.3rem;
+    justify-content: center;
+}
+
+.unit-btn {
+    font-size: 1.45rem;
+    background: #24173a;
+    border: none;
+    border-radius: 0.7em;
+    cursor: pointer;
+    color: #a69dd3;
+    opacity: 0.7;
+    padding: 0.15em 0.37em;
+    transition: background 0.11s, color 0.13s, opacity 0.15s;
+    outline: none;
+}
+
+    .unit-btn:hover, .unit-btn:focus {
+        background: #ece9f6;
+        color: #d2c9ff;
+        opacity: 1;
+    }
+
+.unit-active {
+    background: #ece9f6;
+    color: #f6f1ff;
+    opacity: 1;
+    box-shadow: 0 2px 8px #271b3840;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .focus-dialog {
+        min-width: 0;
+        padding: 1.2rem 0.7rem 1.5rem 0.7rem;
+        border-radius: 1.1rem;
+    }
+
+    .focus-btn-row {
+        flex-direction: column;
+        gap: 1.4rem;
+    }
+
+    .focus-btn-block {
+        min-width: 120px;
+    }
+
+    .end-btn {
+        width: 100%;
+    }
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+    margin: 1.3em 0 0.6em 0;
+}
+
+.page-btn {
+    background: #34234d;
+    color: #e2def8;
+    border: none;
+    padding: 0.56em 1.07em;
+    border-radius: 0.7em;
+    font-size: 1.03em;
+    cursor: pointer;
+    transition: background 0.17s, color 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 8px #271b3840;
+    font-weight: 600;
+}
+
+    .page-btn:hover:not(:disabled),
+    .page-btn.active-page {
+        background: #6a4bcf;
+        color: #fff;
+    }
+
+    .page-btn:disabled {
+        opacity: 0.45;
+        cursor: default;
     }

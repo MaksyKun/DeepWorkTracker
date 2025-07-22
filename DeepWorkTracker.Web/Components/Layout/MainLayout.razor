@@ -1,25 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <!--<NavMenu />-->
-    </div>
-
-    <main>
-        <article class="content px-4">
-            <div style="margin: auto; width:50%; padding: 30px">
-                @Body
-            </div>
-        </article>
-    </main>
-
-    <div class="sidebar">
-        <!--<NavMenu />-->
-    </div>
-</div>
-
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+<div class="app-background"></div>
+<main>
+    @Body
+</main>

@@ -16,7 +16,7 @@ namespace DeepWorkTracker.Service.Services
             {
                 entry.DeepWorkHours = entry.EndTíme.ToTimeSpan().Subtract(entry.StartTime.ToTimeSpan()).Minutes / 60;
                 entry.OutputPerHour = entry.Output / 60;
-                entry.IntensityOfFocus = (entry.FinishedTasks * entry.Output) / (entry.ContextSwitches + 1);
+                entry.IntensityOfFocus = (entry.FinishedTasks * entry.Output) / (entry.Distractions + 1);
                 entry.HighQualityWorkProduced = entry.DeepWorkHours * entry.IntensityOfFocus;
             }
             return entries;
@@ -33,7 +33,7 @@ namespace DeepWorkTracker.Service.Services
         {
             var entry = _deepWorkRepository.GetById(session.Id);
             if (entry == null) return;
-            entry.ContextSwitches = session.ContextSwitches;
+            entry.Distractions = session.Distractions;
             entry.FinishedTasks = session.FinishedTasks;
             entry.Output = session.Output;
             entry.FocusScore = session.FocusScore;

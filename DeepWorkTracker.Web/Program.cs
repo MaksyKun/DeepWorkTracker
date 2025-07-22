@@ -1,6 +1,7 @@
 using DeepWorkTracker.Repository;
 using DeepWorkTracker.Service;
 using DeepWorkTracker.Web.Components;
+using DeepWorkTracker.Web.Components.Shared;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddRazorComponents()
 
 RepositoryInitializer.Initialize(builder.Services);
 ServiceInitializer.Initialize(builder.Services);
+
+builder.Services.AddScoped<DeepWorkSessionTracker>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));

@@ -5,68 +5,168 @@
 
 @if (!GlobalStates.IsFocusModeEnabled)
 {
-    <table>
-        <thead>
-            <tr style="font-weight: bold">
-                <th style="border-top-left-radius:10px">Date</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Context Switches</th>
-                <th>Tasks</th>
-                <th>Output</th>
-                <th>Focus Score</th>
-                <th>Deep Work Hours</th>
-                <th>Intensity of Focus</th>
-                <th style="border-top-right-radius:10px">High-Quality Work Produced</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="main-dashboard">
+        <header class="dashboard-header">
+            <div class="header-title-row">
+                <span class="dashboard-icon">
+                    <svg viewBox="0 0 64 64" width="42" height="42" xmlns="http://www.w3.org/2000/svg" aria-label="Deep Work Icon" style="vertical-align: middle;">
+                        <defs>
+                            <linearGradient id="focusGrad" x1="0" y1="0" x2="0" y2="64" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#6a4bcf" />
+                                <stop offset="100%" stop-color="#34234d" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="32" cy="32" r="29" fill="none" stroke="url(#focusGrad)" stroke-width="5" />
+                        <circle cx="32" cy="32" r="18" fill="none" stroke="url(#focusGrad)" stroke-width="3" opacity="0.45" />
+                        <circle cx="32" cy="32" r="6.5" fill="url(#focusGrad)" stroke="#fff" stroke-width="1.2" />
+                        <polyline points="28,32 31,36 38,26" fill="none" stroke="#fffbe7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+                <h1>Deep Work Tracker</h1>
+            </div>
+            <span class="dashboard-date">@DateTime.Now.ToString("dddd, dd MMM yyyy")</span>
+        </header>
 
-            @foreach (var entry in DataSource)
-            {
-                <tr>
-                    <th>@entry.Date.ToString("dd.MM.yyyy")</th>
-                    <th>@entry.StartTime</th>
-                    <th>@entry.EndTíme</th>
-                    <th>@entry.ContextSwitches</th>
-                    <th>@entry.FinishedTasks</th>
-                    <th>@entry.Output @(GetOutputUnitSymbol(entry))</th>
-                    <th>@(entry.FocusScore * 100)%</th>
-                    <th style="border: solid 2px black">
-                        <p style="@GetGenericRateColor(entry.DeepWorkHours.Value, PreviousEntry != null ? PreviousEntry.DeepWorkHours.Value : -1)">
-                            @(@GetGenericRate(entry.DeepWorkHours.Value, PreviousEntry != null ? PreviousEntry.DeepWorkHours.Value : -1))
-                        </p>
-                    </th>
-                    <th style="border: solid 2px black">
-                        <p style="@GetGenericRateColor(entry.IntensityOfFocus.Value, PreviousEntry != null ? PreviousEntry.IntensityOfFocus.Value : -1)">
-                            @(@GetGenericRate(entry.IntensityOfFocus.Value, PreviousEntry != null ? PreviousEntry.IntensityOfFocus.Value : -1))
-                        </p>
-                    </th>
-                    <th style="border: solid 2px black">
-                        <p style="@GetGenericRateColor(entry.HighQualityWorkProduced.Value, PreviousEntry != null ? PreviousEntry.HighQualityWorkProduced.Value : -1)">
-                            @(@GetGenericRate(entry.HighQualityWorkProduced.Value, PreviousEntry != null ? PreviousEntry.HighQualityWorkProduced.Value : -1))
-                        </p>
-                    </th>
-                </tr>
-                PreviousEntry = entry;
-            }
-        </tbody>
-    </table>
-
-    <div style="height:150px"></div>
-
-    <button class="focusButton" onclick="@StartDeepWorkSession">
-        Focus
-    </button>
-
-    <div style="height:25px"></div>
-    <ul>
-        <li style="padding-bottom: 1px"><strong>Deep Work Hours</strong> = End - Start</li>
-        <li><strong>Output per Hour</strong> = Output / 60</li>
-        <li><strong>Intensity of Work</strong> = (Tasks * Output) / (Context Switches + 1)</li>
-        <li><strong>High-Quality Work Produced</strong> = Deep Work Hours * Intensity of Work</li>
-    </ul>
-} else
+        <section class="dashboard-section">
+            <div class="glass-card stats-card">
+                <table class="focus-table">
+                    <thead>
+                        <tr>
+                            <th class="rounded-left info-bg">Date</th>
+                            <th class="info-bg">Start</th>
+                            <th class="info-bg">End</th>
+                            <th class="info-bg">Distractions</th>
+                            <th class="info-bg">Tasks</th>
+                            <th class="info-bg">Output</th>
+                            <th class="info-bg">Focus Score</th>
+                            <th class="metric-bg">Deep Work Hours</th>
+                            <th class="metric-bg">Intensity of Focus</th>
+                            <th class="metric-bg rounded-right">High-Quality Work Produced</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entry in PagedData)
+                        {
+                            var prev = PreviousEntry;
+                            var rateHours = GetRateAndPercent(entry.DeepWorkHours ?? 0, prev?.DeepWorkHours ?? -1);
+                            var rateIntensity = GetRateAndPercent(entry.IntensityOfFocus ?? 0, prev?.IntensityOfFocus ?? -1);
+                            var rateQuality = GetRateAndPercent(entry.HighQualityWorkProduced ?? 0, prev?.HighQualityWorkProduced ?? -1);
+                            <tr>
+                                <td class="info-bg">@entry.Date.ToString("dd.MM.yyyy")</td>
+                                <td class="info-bg">@entry.StartTime</td>
+                                <td class="info-bg">@entry.EndTíme</td>
+                                <td class="info-bg">@entry.Distractions</td>
+                                <td class="info-bg">@entry.FinishedTasks</td>
+                                <td class="info-bg">@entry.Output @GetOutputUnitSymbol(entry)</td>
+                                <td class="info-bg">@(entry.FocusScore * 100)%</td>
+                                <td class="metric-bg">
+                                    <div class="metric-cell">
+                                        <span class="metric-number">@rateHours.Value</span>
+                                        @if (rateHours.ShowPercentage)
+                                        {
+                                            <span class="metric-percent-inline @(rateHours.IsPositive ? "pos" : "neg")">
+                                                @rateHours.Percentage
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="metric-bg">
+                                    <div class="metric-cell">
+                                        <span class="metric-number">@rateIntensity.Value</span>
+                                        @if (rateIntensity.ShowPercentage)
+                                        {
+                                            <span class="metric-percent-inline @(rateIntensity.IsPositive ? "pos" : "neg")">
+                                                @rateIntensity.Percentage
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="metric-bg">
+                                    <div class="metric-cell">
+                                        <span class="metric-number">@rateQuality.Value%</span>
+                                        @if (rateQuality.ShowPercentage)
+                                        {
+                                            <span class="metric-percent-inline @(rateQuality.IsPositive ? "pos" : "neg")">
+                                                @rateQuality.Percentage
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                            PreviousEntry = entry;
+                        }
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <button class="page-btn" @onclick="() => GoToPage(CurrentPage - 1)" disabled="@(CurrentPage == 1)">&#8592; Prev</button>
+                    @for (int i = 1; i <= TotalPages; i++)
+                    {
+                        <button class="page-btn @(CurrentPage == i ? "active-page" : "")" @onclick="() => GoToPage(i)">@i</button>
+                    }
+                    <button class="page-btn" @onclick="() => GoToPage(CurrentPage + 1)" disabled="@(CurrentPage == TotalPages)">Next &#8594;</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="glass-card info-card">
+        <h3 class="info-title"><span style="font-size:1.1em;vertical-align:middle;">📊</span> Metrics Explained</h3>
+        <ul class="focus-metrics">
+            <li><b>Deep Work Hours</b> = End - Start</li>
+            <li><b>Output per Hour</b> = Output / 60</li>
+            <li><b>Intensity of Work</b> = (Tasks × Output) / (Context Switches + 1)</li>
+            <li><b>High-Quality Work Produced</b> = Deep Work Hours × Intensity of Work</li>
+        </ul>
+        <button class="focus-btn" @onclick="StartDeepWorkSession">Start Focus</button>
+    </div>
+}
+else
 {
-    
+    <div class="focus-dialog">
+        <!-- --- Focus Dialog code here (as you already have) --- -->
+        <h2>Focus Mode Enabled</h2>
+        <p class="focus-time">Time: @ElapsedDisplay</p>
+        <div class="focus-btn-row">
+            <div class="focus-btn-block">
+                <button class="focus-btn" @onclick="SessionTracker.IncreaseDistractions">Increase Distractions</button>
+                <div class="focus-counter">@SessionTracker.CurrentSession.Distractions</div>
+            </div>
+
+            <div class="output-adjust-block">
+                <div class="output-btn-row">
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(-1000)">-1000</button>
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(-100)">-100</button>
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(-10)">-10</button>
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(-1)">-1</button>
+                    <span class="output-value-box">@SessionTracker.CurrentSession.Output</span>
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(1)">+1</button>
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(10)">+10</button>
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(100)">+100</button>
+                    <button class="output-btn" @onclick="() => SessionTracker.AdjustOutput(1000)">+1000</button>
+                </div>
+                <div class="output-units-row">
+                    <button class="unit-btn @(SessionTracker.CurrentSession.OutputUnit == DeepWorkSession.OutputType.Codelines ? "unit-active" : "")"
+                            title="Codelines"
+                            @onclick="() => SessionTracker.SetOutputUnit(DeepWorkSession.OutputType.Codelines)">
+                        🖥️
+                    </button>
+                    <button class="unit-btn @(SessionTracker.CurrentSession.OutputUnit == DeepWorkSession.OutputType.Words ? "unit-active" : "")"
+                            title="Words"
+                            @onclick="() => SessionTracker.SetOutputUnit(DeepWorkSession.OutputType.Words)">
+                        📑
+                    </button>
+                    <button class="unit-btn @(SessionTracker.CurrentSession.OutputUnit == DeepWorkSession.OutputType.Executions ? "unit-active" : "")"
+                            title="Executions"
+                            @onclick="() => SessionTracker.SetOutputUnit(DeepWorkSession.OutputType.Executions)">
+                        ❗
+                    </button>
+                </div>
+            </div>
+
+            <div class="focus-btn-block">
+                <button class="focus-btn" @onclick="SessionTracker.IncreaseTasks">Increase Finished Tasks</button>
+                <div class="focus-counter">@SessionTracker.CurrentSession.FinishedTasks</div>
+            </div>
+        </div>
+        <button class="focus-btn end-btn" @onclick="StopDeepWorkSession">End Focus</button>
+    </div>
 }
